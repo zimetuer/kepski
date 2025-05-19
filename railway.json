@@ -1,0 +1,10 @@
+{
+    "build": {
+      "builder": "python"
+    },
+    "deploy": {
+      "startCommand": "python app.py"
+    },
+    "env": {}
+  }
+  
