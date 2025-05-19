@@ -1,74 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Świat według Kiepskich - Video Library</title>
+  <title>Świat według Kiepskich - Wszystkie odcinki</title>
   <style>
+    :root {
+      --bg-primary: #1a1a1a;
+      --bg-secondary: #242424;
+      --text-primary: #ffffff;
+      --text-secondary: #b3b3b3;
+      --accent-color: #7289da;
+      --accent-hover: #5b6eae;
+      --border-color: #333333;
+      --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
         Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
       line-height: 1.6;
-      margin: 0;
-      padding: 0;
-      color: #333;
-      background-color: #f5f5f5;
+      color: var(--text-primary);
+      background-color: var(--bg-primary);
+      min-height: 100vh;
     }
     
     .container {
       max-width: 1000px;
       margin: 0 auto;
-      padding: 20px;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      margin-top: 20px;
-      margin-bottom: 20px;
+      padding: 2rem;
+      background-color: var(--bg-secondary);
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      margin-top: 2rem;
+      margin-bottom: 2rem;
     }
     
     header {
       text-align: center;
-      margin-bottom: 30px;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 20px;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1.5rem;
     }
     
     h1 {
-      font-size: 28px;
-      margin-bottom: 10px;
-      color: #222;
+      font-size: 1.75rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+      font-weight: 600;
     }
     
     .subtitle {
-      color: #666;
-      font-size: 16px;
+      color: var(--text-secondary);
+      font-size: 1rem;
     }
     
     .search-form {
-      margin: 20px 0;
+      margin: 1.5rem 0;
       display: flex;
+      gap: 0.5rem;
     }
     
     .search-form input[type="text"] {
       flex-grow: 1;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px 0 0 4px;
-      font-size: 16px;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 1rem;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+    }
+    
+    .search-form input[type="text"]::placeholder {
+      color: var(--text-secondary);
     }
     
     .search-form button {
-      padding: 10px 15px;
-      background-color: #4a76a8;
+      padding: 0.75rem 1.5rem;
+      background-color: var(--accent-color);
       color: white;
       border: none;
-      border-radius: 0 4px 4px 0;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 1rem;
+      transition: all 0.2s ease;
     }
     
     .search-form button:hover {
-      background-color: #3a5b89;
+      background-color: var(--accent-hover);
+      transform: translateY(-1px);
     }
     
     .episode-list {
@@ -78,84 +104,123 @@
     }
     
     .episode-item {
-      padding: 15px;
-      border-bottom: 1px solid #eee;
-      transition: background-color 0.2s;
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      transition: all 0.2s ease;
     }
     
     .episode-item:hover {
-      background-color: #f9f9f9;
+      background-color: var(--bg-primary);
     }
     
     .episode-link {
       display: block;
       text-decoration: none;
-      color: #4a76a8;
+      color: var(--accent-color);
       font-weight: 500;
-      font-size: 16px;
+      font-size: 1rem;
+      transition: color 0.2s ease;
     }
     
     .episode-link:hover {
-      text-decoration: underline;
+      color: var(--accent-hover);
     }
     
     .pagination {
       display: flex;
       justify-content: center;
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px solid #eee;
+      gap: 0.5rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-color);
     }
     
     .page-link {
       display: inline-block;
-      padding: 8px 12px;
-      margin: 0 5px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
       text-decoration: none;
-      color: #4a76a8;
-      transition: all 0.2s;
+      color: var(--text-primary);
+      transition: all 0.2s ease;
+      background-color: var(--bg-primary);
     }
     
     .page-link:hover {
-      background-color: #f5f5f5;
+      background-color: var(--accent-color);
+      border-color: var(--accent-color);
+      transform: translateY(-1px);
     }
     
     .page-link.active {
-      background-color: #4a76a8;
+      background-color: var(--accent-color);
       color: white;
-      border-color: #4a76a8;
+      border-color: var(--accent-color);
     }
     
     .page-info {
       text-align: center;
-      margin-bottom: 10px;
-      font-size: 14px;
-      color: #666;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
     }
     
     footer {
-      margin-top: 30px;
+      margin-top: 2rem;
       text-align: center;
-      font-size: 14px;
-      color: #777;
-      padding-top: 20px;
-      border-top: 1px solid #eee;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-color);
     }
 
     .discord-info {
-      margin-top: 40px;
-      padding: 20px;
-      background-color: #f0f7ff;
-      border-radius: 8px;
-      border: 1px solid #c3deff;
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background-color: var(--bg-primary);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
     }
     
     .discord-info h2 {
       margin-top: 0;
-      font-size: 20px;
-      color: #4a76a8;
+      font-size: 1.25rem;
+      color: var(--accent-color);
+      margin-bottom: 1rem;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--bg-secondary);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-color);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+        margin: 1rem;
+      }
+
+      .search-form {
+        flex-direction: column;
+      }
+
+      .search-form button {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -163,16 +228,16 @@
   <div class="container">
     <header>
       <h1>Świat według Kiepskich</h1>
-      <p class="subtitle">Video Library - All Episodes</p>
+      <p class="subtitle">Wszystkie odcinki</p>
     </header>
     
     <form action="{{ url_for('search') }}" method="get" class="search-form">
-      <input type="text" name="q" placeholder="Search for an episode..." required>
-      <button type="submit">Search</button>
+      <input type="text" name="q" placeholder="Szukaj odcinka..." required>
+      <button type="submit">Szukaj</button>
     </form>
     
     <div class="page-info">
-      Showing episodes {{ (current_page - 1) * 20 + 1 }} - {{ min((current_page * 20), total_videos) }} of {{ total_videos }}
+      Pokazuję odcinki {{ (current_page - 1) * 20 + 1 }} - {{ min((current_page * 20), total_videos) }} z {{ total_videos }}
     </div>
     
     <ul class="episode-list">
@@ -188,7 +253,7 @@
     {% if total_pages > 1 %}
     <div class="pagination">
       {% if current_page > 1 %}
-      <a href="{{ url_for('index', page=current_page-1) }}" class="page-link">Previous</a>
+      <a href="{{ url_for('index', page=current_page-1) }}" class="page-link">Poprzednia</a>
       {% endif %}
       
       {% for page in range(1, total_pages + 1) %}
@@ -202,19 +267,13 @@
       {% endfor %}
       
       {% if current_page < total_pages %}
-      <a href="{{ url_for('index', page=current_page+1) }}" class="page-link">Next</a>
+      <a href="{{ url_for('index', page=current_page+1) }}" class="page-link">Następna</a>
       {% endif %}
     </div>
     {% endif %}
     
-    <div class="discord-info">
-      <h2>Discord Video Embedding</h2>
-      <p>This video library is designed to work seamlessly with Discord. When you share a video link from this site in Discord, it will automatically embed the video player directly in the chat.</p>
-      <p>Just copy the URL from any episode page and paste it into Discord - the video player will appear automatically!</p>
-    </div>
-    
     <footer>
-      <p>Świat według Kiepskich Video Library - {{ total_videos }} episodes available</p>
+      <p>Świat według Kiepskich - Wszystkie odcinki</p>
     </footer>
   </div>
 </body>
