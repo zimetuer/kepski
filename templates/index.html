@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Świat według Kiepskich - Wszystkie odcinki</title>
+  <title>swiat wedlug kiepskich</title>
   <style>
     :root {
       --bg-primary: #1a1a1a;
@@ -227,7 +227,7 @@
 <body>
   <div class="container">
     <header>
-      <h1>Świat według Kiepskich</h1>
+      <h1>swiat wedlug kiepskich</h1>
       <p class="subtitle">Wszystkie odcinki</p>
     </header>
     
@@ -237,7 +237,7 @@
     </form>
     
     <div class="page-info">
-      Pokazuję odcinki {{ (current_page - 1) * 20 + 1 }} - {{ min((current_page * 20), total_videos) }} z {{ total_videos }}
+      Pokazuje odcinki {{ (current_page - 1) * 20 + 1 }} - {{ min((current_page * 20), total_videos) }} z {{ total_videos }}
     </div>
     
     <ul class="episode-list">
@@ -267,13 +267,13 @@
       {% endfor %}
       
       {% if current_page < total_pages %}
-      <a href="{{ url_for('index', page=current_page+1) }}" class="page-link">Następna</a>
+      <a href="{{ url_for('index', page=current_page+1) }}" class="page-link">Nastepna</a>
       {% endif %}
     </div>
     {% endif %}
     
     <footer>
-      <p>Świat według Kiepskich - Wszystkie odcinki</p>
+      <p>swiat wedlug kiepskich</p>
     </footer>
   </div>
 </body>

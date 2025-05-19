@@ -1,9 +1,17 @@
 import os
-from flask import Flask, render_template, abort, request, redirect, url_for, send_file
+from flask import Flask, render_template, abort, request, redirect, url_for, send_file, make_response
 from urllib.parse import urlparse
 import re
 
 app = Flask(__name__)
+
+# Add CORS headers for Discord
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 def load_videos_from_file(filename):
     """Load videos from a text file with format: 'Title URL'"""
@@ -114,7 +122,10 @@ def video_file(episode_id):
         
         # If the URL is a local file path
         if os.path.exists(video_url):
-            return send_file(video_url)
+            response = make_response(send_file(video_url))
+            response.headers['Content-Type'] = 'video/mp4'
+            response.headers['Accept-Ranges'] = 'bytes'
+            return response
         
         # If it's a remote URL, redirect to it
         return redirect(video_url)
