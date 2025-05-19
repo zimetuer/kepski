@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, abort, request, redirect, url_for
+from flask import Flask, render_template, abort, request, redirect, url_for, send_file
 from urllib.parse import urlparse
 import re
 
@@ -86,6 +86,7 @@ def episode(episode_id):
             base_url = f"https://{request.host}"
         
         video_url = f"{base_url}/video/{episode_id}"
+        video_file_url = f"{base_url}/video_file/{episode_id}"
         
         # Get next and previous episode IDs
         prev_id = episode_id - 1 if episode_id > 1 else None
@@ -96,10 +97,27 @@ def episode(episode_id):
             video=video, 
             episode_id=episode_id,
             video_url=video_url,
+            video_file_url=video_file_url,
             prev_id=prev_id,
             next_id=next_id,
             total_episodes=len(videos)
         )
+    else:
+        abort(404)
+
+@app.route("/video_file/<int:episode_id>")
+def video_file(episode_id):
+    """Serve the video file directly"""
+    if 1 <= episode_id <= len(videos):
+        video = videos[episode_id - 1]
+        video_url = video["url"]
+        
+        # If the URL is a local file path
+        if os.path.exists(video_url):
+            return send_file(video_url)
+        
+        # If it's a remote URL, redirect to it
+        return redirect(video_url)
     else:
         abort(404)
 
