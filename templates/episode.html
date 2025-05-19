@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   
   <!-- Basic page title -->
-  <title>{{ video.title }} - swiat wedlug kiepskich</title>
+  <title>{{ video.title }} - swk</title>
   
   <!-- Essential OpenGraph meta tags for Discord embeds -->
   <meta property="og:title" content="{{ video.title }}" />
   <meta property="og:type" content="video.other" />
   <meta property="og:url" content="{{ request.url }}" />
-  <meta property="og:site_name" content="swiat wedlug kiepskich" />
-  <meta property="og:description" content="odcinek {{ video.episode_num }} z {{ total_episodes }} - obejrzyj online" />
+  <meta property="og:site_name" content="swk" />
+  <meta property="og:description" content="odcinek {{ video.episode_num }} z {{ total_episodes }}" />
   
   <!-- Video-specific OpenGraph tags - CRITICAL FOR DISCORD -->
   <meta property="og:video" content="{{ video_file_url }}" />
@@ -25,13 +25,13 @@
   <!-- Twitter Card tags -->
   <meta name="twitter:card" content="player" />
   <meta name="twitter:title" content="{{ video.title }}" />
-  <meta name="twitter:description" content="odcinek {{ video.episode_num }} z {{ total_episodes }} - obejrzyj online" />
+  <meta name="twitter:description" content="odcinek {{ video.episode_num }} z {{ total_episodes }}" />
   <meta name="twitter:player" content="{{ video_file_url }}" />
   <meta name="twitter:player:width" content="1280" />
   <meta name="twitter:player:height" content="720" />
   
   <!-- Additional metadata -->
-  <meta name="description" content="obejrzyj {{ video.title }} - odcinek {{ video.episode_num }} z {{ total_episodes }}" />
+  <meta name="description" content="{{ video.title }} - odcinek {{ video.episode_num }} z {{ total_episodes }}" />
   <meta name="theme-color" content="#7289da" />
   
   <style>
@@ -255,12 +255,7 @@
     </div>
     
     <div class="discord-link">
-      <h3>🔗 link do discord embed:</h3>
-      <p>wklej ten link na discordzie aby otrzymac embed z wideo:</p>
-      <code id="discord-url">{{ request.url }}</code>
-      <button class="copy-button" onclick="copyToClipboard('discord-url')">skopiuj link</button>
-      
-      <h3 style="margin-top: 1.5rem;">🎬 bezposredni link do wideo:</h3>
+      <h3 style="margin-top: 1.5rem;">🎬 link do dc:</h3>
       <p>lub uzyj tego linka aby otrzymac tylko plik wideo:</p>
       <code id="video-url">{{ video_file_url }}</code>
       <button class="copy-button" onclick="copyToClipboard('video-url')">skopiuj link do wideo</button>
