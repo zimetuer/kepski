@@ -255,7 +255,12 @@
     </div>
     
     <div class="discord-link">
-      <h3 style="margin-top: 1.5rem;">🎬 link do dc:</h3>
+      <h3>🔗 link do discord embed:</h3>
+      <p>wklej ten link na discordzie aby otrzymac embed:</p>
+      <code id="discord-url">{{ request.url }}</code>
+      <button class="copy-button" onclick="copyToClipboard('discord-url')">skopiuj link</button>
+      
+      <h3 style="margin-top: 1.5rem;">🎬 link do video:</h3>
       <p>lub uzyj tego linka aby otrzymac tylko plik wideo:</p>
       <code id="video-url">{{ video_file_url }}</code>
       <button class="copy-button" onclick="copyToClipboard('video-url')">skopiuj link do wideo</button>

@@ -88,19 +88,25 @@ def index():
         min=min
     )
 
-@app.route("/video/<int:episode_id>")
+@app.route("/odc/<int:episode_id>")
 def episode(episode_id):
     """Render a specific video episode page"""
-    if 1 <= episode_id <= len(videos):
-        video = videos[episode_id - 1]
+    # Find the video with matching episode number
+    video = next((v for v in videos if v["episode_num"] == episode_id), None)
+    
+    if video:
         base_url = get_base_url(request)
         
         # For Discord embeds, we need the direct video file URL
-        video_file_url = f"{base_url}/video_file/{episode_id}"
+        video_file_url = f"{base_url}/odc_file/{episode_id}"
         
         # Get next and previous episode IDs
-        prev_id = episode_id - 1 if episode_id > 1 else None
-        next_id = episode_id + 1 if episode_id < len(videos) else None
+        current_index = videos.index(video)
+        prev_video = videos[current_index - 1] if current_index > 0 else None
+        next_video = videos[current_index + 1] if current_index < len(videos) - 1 else None
+        
+        prev_id = prev_video["episode_num"] if prev_video else None
+        next_id = next_video["episode_num"] if next_video else None
         
         return render_template(
             "episode.html", 
@@ -114,11 +120,13 @@ def episode(episode_id):
     else:
         abort(404)
 
-@app.route("/video_file/<int:episode_id>")
+@app.route("/odc_file/<int:episode_id>")
 def video_file(episode_id):
     """Serve the video file directly with proper headers for Discord"""
-    if 1 <= episode_id <= len(videos):
-        video = videos[episode_id - 1]
+    # Find the video with matching episode number
+    video = next((v for v in videos if v["episode_num"] == episode_id), None)
+    
+    if video:
         video_url = video["url"]
         
         # If the URL is a local file path
