@@ -5,31 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   
   <!-- Basic page title -->
-  <title>{{ video.title }} - Video Player</title>
+  <title>{{ video.title }} - Świat według Kiepskich</title>
   
   <!-- Essential OpenGraph meta tags for Discord embeds -->
   <meta property="og:title" content="{{ video.title }}" />
   <meta property="og:type" content="video.other" />
   <meta property="og:url" content="{{ video_url }}" />
+  <meta property="og:site_name" content="Świat według Kiepskich" />
+  <meta property="og:description" content="Episode {{ video.episode_num }} of {{ total_episodes }} - Watch online" />
   
-  <!-- Video-specific OpenGraph tags for Discord embedding -->
+  <!-- Video-specific OpenGraph tags -->
   <meta property="og:video" content="{{ video.url }}" />
   <meta property="og:video:url" content="{{ video.url }}" />
   <meta property="og:video:secure_url" content="{{ video.url }}" />
   <meta property="og:video:type" content="video/mp4" />
-  <meta property="og:video:width" content="640" />
-  <meta property="og:video:height" content="360" />
+  <meta property="og:video:width" content="1280" />
+  <meta property="og:video:height" content="720" />
   
-  <!-- Additional metadata for better embeds -->
-  <meta property="og:site_name" content="Świat według Kiepskich - Video Library" />
-  <meta property="og:description" content="Watch: {{ video.title }}" />
+  <!-- Thumbnail for Discord embed -->
+  <meta property="og:image" content="{{ url_for('static', filename='thumbnails/episode_' + video.episode_num|string + '.jpg', _external=True) }}" />
+  <meta property="og:image:width" content="1280" />
+  <meta property="og:image:height" content="720" />
   
-  <!-- Twitter Card tags for Twitter embeds (which Discord may also use) -->
-  <meta name="twitter:card" content="player" />
+  <!-- Twitter Card tags -->
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="{{ video.title }}" />
-  <meta name="twitter:player" content="{{ video.url }}" />
-  <meta name="twitter:player:width" content="640" />
-  <meta name="twitter:player:height" content="360" />
+  <meta name="twitter:description" content="Episode {{ video.episode_num }} of {{ total_episodes }} - Watch online" />
+  <meta name="twitter:image" content="{{ url_for('static', filename='thumbnails/episode_' + video.episode_num|string + '.jpg', _external=True) }}" />
+  
+  <!-- Additional metadata -->
+  <meta name="description" content="Watch {{ video.title }} - Episode {{ video.episode_num }} of {{ total_episodes }}" />
+  <meta name="theme-color" content="#4a76a8" />
   
   <style>
     body {
