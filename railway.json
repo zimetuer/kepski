@@ -4,7 +4,6 @@
     },
     "deploy": {
       "startCommand": "python app.py"
-    },
-    "env": {}
+    }
   }
   
