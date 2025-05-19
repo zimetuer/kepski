@@ -10,30 +10,29 @@
   <!-- Essential OpenGraph meta tags for Discord embeds -->
   <meta property="og:title" content="{{ video.title }}" />
   <meta property="og:type" content="video.other" />
-  <meta property="og:url" content="{{ video_file_url }}" />
+  <meta property="og:url" content="{{ request.url }}" />
   <meta property="og:site_name" content="swiat wedlug kiepskich" />
-  <meta property="og:description" content="odcinek {{ video.episode_num }} z {{ total_episodes }} - obejrzyj online (3:33)" />
+  <meta property="og:description" content="odcinek {{ video.episode_num }} z {{ total_episodes }} - obejrzyj online" />
   
-  <!-- Video-specific OpenGraph tags -->
+  <!-- Video-specific OpenGraph tags - CRITICAL FOR DISCORD -->
   <meta property="og:video" content="{{ video_file_url }}" />
   <meta property="og:video:url" content="{{ video_file_url }}" />
   <meta property="og:video:secure_url" content="{{ video_file_url }}" />
   <meta property="og:video:type" content="video/mp4" />
   <meta property="og:video:width" content="1280" />
   <meta property="og:video:height" content="720" />
-  <meta property="og:video:duration" content="213" />
   
   <!-- Twitter Card tags -->
   <meta name="twitter:card" content="player" />
   <meta name="twitter:title" content="{{ video.title }}" />
-  <meta name="twitter:description" content="odcinek {{ video.episode_num }} z {{ total_episodes }} - obejrzyj online (3:33)" />
+  <meta name="twitter:description" content="odcinek {{ video.episode_num }} z {{ total_episodes }} - obejrzyj online" />
   <meta name="twitter:player" content="{{ video_file_url }}" />
   <meta name="twitter:player:width" content="1280" />
   <meta name="twitter:player:height" content="720" />
   
   <!-- Additional metadata -->
-  <meta name="description" content="obejrzyj {{ video.title }} - odcinek {{ video.episode_num }} z {{ total_episodes }} (3:33)" />
-  <meta name="theme-color" content="#1a1a1a" />
+  <meta name="description" content="obejrzyj {{ video.title }} - odcinek {{ video.episode_num }} z {{ total_episodes }}" />
+  <meta name="theme-color" content="#7289da" />
   
   <style>
     :root {
@@ -147,6 +146,12 @@
       margin-top: 2rem;
       border: 1px solid var(--border-color);
     }
+
+    .discord-link h3 {
+      color: var(--accent-color);
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
     
     .discord-link code {
       display: block;
@@ -154,10 +159,31 @@
       background-color: var(--bg-primary);
       border: 1px solid var(--border-color);
       border-radius: 8px;
-      margin-top: 0.5rem;
+      margin: 0.5rem 0;
       font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       word-break: break-all;
       color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    .copy-button {
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      transition: background-color 0.2s ease;
+    }
+
+    .copy-button:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .copy-button:active {
+      background-color: #4a5a8a;
     }
     
     footer {
@@ -229,9 +255,15 @@
     </div>
     
     <div class="discord-link">
-      <p><strong>link do dc:</strong></p>
-      <code>{{ video_file_url }}</code>
-      <p>wklej ten link na dc i powinno (slowo klucz) dzialac</p>
+      <h3>🔗 link do discord embed:</h3>
+      <p>wklej ten link na discordzie aby otrzymac embed z wideo:</p>
+      <code id="discord-url">{{ request.url }}</code>
+      <button class="copy-button" onclick="copyToClipboard('discord-url')">skopiuj link</button>
+      
+      <h3 style="margin-top: 1.5rem;">🎬 bezposredni link do wideo:</h3>
+      <p>lub uzyj tego linka aby otrzymac tylko plik wideo:</p>
+      <code id="video-url">{{ video_file_url }}</code>
+      <button class="copy-button" onclick="copyToClipboard('video-url')">skopiuj link do wideo</button>
     </div>
     
     <div class="navigation">
@@ -254,5 +286,71 @@
       <p>swiat wedlug kiepskich</p>
     </footer>
   </div>
+
+  <script>
+    function copyToClipboard(elementId) {
+      const element = document.getElementById(elementId);
+      const text = element.textContent;
+      
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => {
+          showCopyNotification("skopiowano!");
+        });
+      } else {
+        // Fallback for older browsers
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        textArea.style.top = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+          document.execCommand('copy');
+          showCopyNotification("skopiowano!");
+        } catch (err) {
+          console.error('Failed to copy: ', err);
+          showCopyNotification("błąd kopiowania");
+        }
+        
+        document.body.removeChild(textArea);
+      }
+    }
+
+    function showCopyNotification(message) {
+      // Create notification element
+      const notification = document.createElement('div');
+      notification.textContent = message;
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: var(--accent-color);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      `;
+      
+      document.body.appendChild(notification);
+      
+      // Show notification
+      setTimeout(() => {
+        notification.style.opacity = '1';
+      }, 10);
+      
+      // Hide and remove notification
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 300);
+      }, 2000);
+    }
+  </script>
 </body>
 </html>

@@ -54,6 +54,15 @@ def is_valid_video_url(url):
     path = parsed_url.path.lower()
     return any(path.endswith(ext) for ext in video_extensions)
 
+def get_base_url(request):
+    """Get the base URL for the application"""
+    # For production, use HTTPS
+    if request.host != '0.0.0.0:8080' and request.host != 'localhost:8080':
+        return f"https://{request.host}"
+    else:
+        # For local development
+        return f"http://{request.host}"
+
 # Load videos from the file
 videos = load_videos_from_file("message(4).txt")
 
@@ -84,16 +93,9 @@ def episode(episode_id):
     """Render a specific video episode page"""
     if 1 <= episode_id <= len(videos):
         video = videos[episode_id - 1]
+        base_url = get_base_url(request)
         
-        # Get current absolute URL for OpenGraph tags
-        if request.host == '0.0.0.0:8080':
-            # Local development
-            base_url = f"http://{request.host}"
-        else:
-            # Production
-            base_url = f"https://{request.host}"
-        
-        video_url = f"{base_url}/video/{episode_id}"
+        # For Discord embeds, we need the direct video file URL
         video_file_url = f"{base_url}/video_file/{episode_id}"
         
         # Get next and previous episode IDs
@@ -104,7 +106,6 @@ def episode(episode_id):
             "episode.html", 
             video=video, 
             episode_id=episode_id,
-            video_url=video_url,
             video_file_url=video_file_url,
             prev_id=prev_id,
             next_id=next_id,
@@ -115,16 +116,64 @@ def episode(episode_id):
 
 @app.route("/video_file/<int:episode_id>")
 def video_file(episode_id):
-    """Serve the video file directly"""
+    """Serve the video file directly with proper headers for Discord"""
     if 1 <= episode_id <= len(videos):
         video = videos[episode_id - 1]
         video_url = video["url"]
         
         # If the URL is a local file path
         if os.path.exists(video_url):
-            response = make_response(send_file(video_url))
+            # Get file size for Content-Length header
+            file_size = os.path.getsize(video_url)
+            
+            def generate():
+                with open(video_url, 'rb') as f:
+                    while True:
+                        data = f.read(4096)
+                        if not data:
+                            break
+                        yield data
+            
+            response = make_response(generate())
             response.headers['Content-Type'] = 'video/mp4'
+            response.headers['Content-Length'] = str(file_size)
             response.headers['Accept-Ranges'] = 'bytes'
+            response.headers['Cache-Control'] = 'public, max-age=3600'
+            
+            # Handle range requests for video seeking
+            range_header = request.headers.get('Range', None)
+            if range_header:
+                byte_start = 0
+                byte_end = file_size - 1
+                
+                if range_header:
+                    match = re.search(r'bytes=(\d+)-(\d*)', range_header)
+                    if match:
+                        byte_start = int(match.group(1))
+                        if match.group(2):
+                            byte_end = int(match.group(2))
+                
+                content_length = byte_end - byte_start + 1
+                
+                def generate_range():
+                    with open(video_url, 'rb') as f:
+                        f.seek(byte_start)
+                        remaining = content_length
+                        while remaining:
+                            chunk_size = min(4096, remaining)
+                            data = f.read(chunk_size)
+                            if not data:
+                                break
+                            remaining -= len(data)
+                            yield data
+                
+                response = make_response(generate_range())
+                response.headers['Content-Type'] = 'video/mp4'
+                response.headers['Content-Range'] = f'bytes {byte_start}-{byte_end}/{file_size}'
+                response.headers['Content-Length'] = str(content_length)
+                response.headers['Accept-Ranges'] = 'bytes'
+                response.status_code = 206
+            
             return response
         
         # If it's a remote URL, redirect to it
