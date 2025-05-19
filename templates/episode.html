@@ -10,28 +10,29 @@
   <!-- Essential OpenGraph meta tags for Discord embeds -->
   <meta property="og:title" content="{{ video.title }}" />
   <meta property="og:type" content="video.other" />
-  <meta property="og:url" content="{{ video.url }}" />
+  <meta property="og:url" content="{{ video_file_url }}" />
   <meta property="og:site_name" content="swiat wedlug kiepskich" />
-  <meta property="og:description" content="odcinek {{ video.episode_num }} z {{ total_episodes }} - obejrzyj online" />
+  <meta property="og:description" content="odcinek {{ video.episode_num }} z {{ total_episodes }} - obejrzyj online (3:33)" />
   
   <!-- Video-specific OpenGraph tags -->
-  <meta property="og:video" content="{{ video.url }}" />
-  <meta property="og:video:url" content="{{ video.url }}" />
-  <meta property="og:video:secure_url" content="{{ video.url }}" />
+  <meta property="og:video" content="{{ video_file_url }}" />
+  <meta property="og:video:url" content="{{ video_file_url }}" />
+  <meta property="og:video:secure_url" content="{{ video_file_url }}" />
   <meta property="og:video:type" content="video/mp4" />
   <meta property="og:video:width" content="1280" />
   <meta property="og:video:height" content="720" />
+  <meta property="og:video:duration" content="213" />
   
   <!-- Twitter Card tags -->
   <meta name="twitter:card" content="player" />
   <meta name="twitter:title" content="{{ video.title }}" />
-  <meta name="twitter:description" content="odcinek {{ video.episode_num }} z {{ total_episodes }} - obejrzyj online" />
-  <meta name="twitter:player" content="{{ video.url }}" />
+  <meta name="twitter:description" content="odcinek {{ video.episode_num }} z {{ total_episodes }} - obejrzyj online (3:33)" />
+  <meta name="twitter:player" content="{{ video_file_url }}" />
   <meta name="twitter:player:width" content="1280" />
   <meta name="twitter:player:height" content="720" />
   
   <!-- Additional metadata -->
-  <meta name="description" content="obejrzyj {{ video.title }} - odcinek {{ video.episode_num }} z {{ total_episodes }}" />
+  <meta name="description" content="obejrzyj {{ video.title }} - odcinek {{ video.episode_num }} z {{ total_episodes }} (3:33)" />
   <meta name="theme-color" content="#1a1a1a" />
   
   <style>
