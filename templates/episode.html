@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   
   <!-- Basic page title -->
-  <title>{{ video.title }} - Świat według Kiepskich</title>
+  <title>{{ video.title }} - swiat wedlug kiepskich</title>
   
   <!-- Essential OpenGraph meta tags for Discord embeds -->
   <meta property="og:title" content="{{ video.title }}" />
   <meta property="og:type" content="video.other" />
   <meta property="og:url" content="{{ video.url }}" />
-  <meta property="og:site_name" content="Świat według Kiepskich" />
-  <meta property="og:description" content="Odcinek {{ video.episode_num }} z {{ total_episodes }} - Obejrzyj online" />
+  <meta property="og:site_name" content="swiat wedlug kiepskich" />
+  <meta property="og:description" content="odcinek {{ video.episode_num }} z {{ total_episodes }} - obejrzyj online" />
   
   <!-- Video-specific OpenGraph tags -->
   <meta property="og:video" content="{{ video.url }}" />
@@ -22,22 +22,16 @@
   <meta property="og:video:width" content="1280" />
   <meta property="og:video:height" content="720" />
   
-  <!-- Thumbnail for Discord embed -->
-  <meta property="og:image" content="{{ url_for('static', filename='thumbnails/episode_' + video.episode_num|string + '.jpg', _external=True) }}" />
-  <meta property="og:image:width" content="1280" />
-  <meta property="og:image:height" content="720" />
-  
   <!-- Twitter Card tags -->
   <meta name="twitter:card" content="player" />
   <meta name="twitter:title" content="{{ video.title }}" />
-  <meta name="twitter:description" content="Odcinek {{ video.episode_num }} z {{ total_episodes }} - Obejrzyj online" />
+  <meta name="twitter:description" content="odcinek {{ video.episode_num }} z {{ total_episodes }} - obejrzyj online" />
   <meta name="twitter:player" content="{{ video.url }}" />
   <meta name="twitter:player:width" content="1280" />
   <meta name="twitter:player:height" content="720" />
-  <meta name="twitter:image" content="{{ url_for('static', filename='thumbnails/episode_' + video.episode_num|string + '.jpg', _external=True) }}" />
   
   <!-- Additional metadata -->
-  <meta name="description" content="Obejrzyj {{ video.title }} - Odcinek {{ video.episode_num }} z {{ total_episodes }}" />
+  <meta name="description" content="obejrzyj {{ video.title }} - odcinek {{ video.episode_num }} z {{ total_episodes }}" />
   <meta name="theme-color" content="#1a1a1a" />
   
   <style>
@@ -56,6 +50,7 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      text-transform: lowercase;
     }
 
     body {
@@ -144,15 +139,6 @@
       color: var(--text-secondary);
     }
     
-    .embed-info {
-      margin-top: 2rem;
-      padding: 1.5rem;
-      background-color: var(--bg-secondary);
-      border-radius: 12px;
-      font-size: 0.9rem;
-      border-left: 4px solid var(--accent-color);
-    }
-    
     .discord-link {
       padding: 1.5rem;
       background-color: var(--bg-secondary);
@@ -237,7 +223,7 @@
     <div class="video-container">
       <video controls autoplay>
         <source src="{{ video_file_url }}" type="video/mp4">
-        Twoja przeglądarka nie wspiera odtwarzania wideo
+        twoja przegladarka nie wspiera odtwarzania wideo
       </video>
     </div>
     
@@ -247,25 +233,24 @@
       <p>wklej ten link na dc i powinno (slowo klucz) dzialac</p>
     </div>
     
-    
     <div class="navigation">
       {% if prev_id %}
-      <a href="{{ url_for('episode', episode_id=prev_id) }}" class="nav-button">← Poprzedni odcinek</a>
+      <a href="{{ url_for('episode', episode_id=prev_id) }}" class="nav-button">← poprzedni odcinek</a>
       {% else %}
-      <span class="nav-button disabled">← Poprzedni odcinek</span>
+      <span class="nav-button disabled">← poprzedni odcinek</span>
       {% endif %}
       
-      <a href="{{ url_for('index') }}" class="nav-button">Wszystkie odcinki</a>
+      <a href="{{ url_for('index') }}" class="nav-button">wszystkie odcinki</a>
       
       {% if next_id %}
-      <a href="{{ url_for('episode', episode_id=next_id) }}" class="nav-button">Nastepny odcinek →</a>
+      <a href="{{ url_for('episode', episode_id=next_id) }}" class="nav-button">nastepny odcinek →</a>
       {% else %}
-      <span class="nav-button disabled">Nastepny odcinek →</span>
+      <span class="nav-button disabled">nastepny odcinek →</span>
       {% endif %}
     </div>
     
     <footer>
-      <p>swiat według kiepskich</p>
+      <p>swiat wedlug kiepskich</p>
     </footer>
   </div>
 </body>
