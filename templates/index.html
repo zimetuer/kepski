@@ -231,10 +231,7 @@
       <p class="subtitle">Wszystkie odcinki</p>
     </header>
     
-    <form action="{{ url_for('search') }}" method="get" class="search-form">
-      <input type="text" name="q" placeholder="Szukaj odcinka..." required>
-      <button type="submit">Szukaj</button>
-    </form>
+ 
     
     <div class="page-info">
       Pokazuje odcinki {{ (current_page - 1) * 20 + 1 }} - {{ min((current_page * 20), total_videos) }} z {{ total_videos }}
